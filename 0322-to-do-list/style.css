@@ -1,0 +1,139 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 62.5%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cbf3f0;
+  font-family: sans-serif;
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: #2ec4b6;
+  min-height: 20vh;
+  max-height: 70vh;
+}
+
+header {
+  background-color: #2ec4b6;
+
+  text-align: center;
+  justify-self: center;
+  padding: 30px;
+  flex: 0 0 100%;
+}
+
+h2 {
+  padding-bottom: 10px;
+}
+
+form {
+  flex: 0 0 80%;
+  justify-self: center;
+}
+
+input {
+  flex: 0 0 100%;
+
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 10px;
+  width: calc(100% - 150px);
+  font-size: 16px;
+  justify-self: flex-end;
+}
+
+.todo-button {
+  padding: 10px;
+  width: 140px;
+  background: #cbf3f0;
+  color: #ff9f1c;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+  outline: none;
+}
+
+.todo-button:hover {
+  background-color: #36d6c6;
+}
+
+.todo-list-container {
+  flex: 0 0 100%;
+  overflow-y: scroll;
+  max-height: 60vh;
+}
+
+ul li {
+  flex: 0 0 100%;
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  background: #ffbf69;
+  font-size: 18px;
+  transition: 0.2s;
+
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+li:hover {
+  background: #fac784;
+}
+
+.alert {
+  border: #f44336 solid 1px;
+}
+
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* Add a "checked" mark when clicked on */
+ul li.checked::before {
+  content: "";
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}

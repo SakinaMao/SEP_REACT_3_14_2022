@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>To Do List</title>
+  </head>
+  <body>
+    <section class="todo-wrapper">
+      <header class="todo-title">
+        <h2>My To Do List</h2>
+
+        <form>
+          <input
+            type="text"
+            id="myInput"
+            class="todo-input"
+            placeholder="to do "
+          />
+          <button type="submit" class="todo-button">Add</button>
+        </form>
+      </header>
+      <div class="todo-list-container">
+        <ul class="todo-list">
+          <li>Hit the gym</li>
+          <li class="checked">Pay bills</li>
+          <li>Meet George</li>
+          <li>Buy eggs</li>
+          <li>Read a book</li>
+          <li>Organize office</li>
+        </ul>
+      </div>
+    </section>
+    <script src="todo.js"></script>
+  </body>
+</html>
