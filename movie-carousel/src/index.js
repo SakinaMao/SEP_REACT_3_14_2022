@@ -4,19 +4,6 @@ const btnLeft = document.querySelector(".btn--left");
 const btnRight = document.querySelector(".btn--right");
 const slider = document.querySelector(".movie_container");
 
-// const getMovieData = async function () {
-//   try {
-//     const fetchMovie = await fetch("http://localhost:3000/movies");
-//     const movieData = await fetchMovie.json();
-
-//     console.log(movieData);
-
-//     return movieData;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 function getMovies() {
   return fetch("http://localhost:3000/movies").then((response) =>
     response.json()
@@ -28,9 +15,9 @@ function genernateCarouselCard(movie) {
           <img
             src="${movie.imgUrl}" class="carousel_card--image"
           />
-          <p class="carousel_card--title">${movie.name}</p>
+          <p class="carousel_card--title">Movie: ${movie.name}</p>
           <p class="carousel_card--info">
-           ${movie.outlineInfo}
+           Info: ${movie.outlineInfo}
           </p>
         </div>`;
 }
@@ -44,13 +31,14 @@ function renderCarouselCards(movies) {
   const tmp = generateCardsList(movies);
   render(ele, tmp);
 }
+
 function render(element, template) {
   element.insertAdjacentHTML("afterbegin", template);
 }
 
 function renderCarouselSlide() {
   const slides = document.querySelectorAll(".movie_carousel_card");
-  console.log(slides);
+
   slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
   let curSlide = 0;
   const maxSlide = slides.length;
@@ -62,24 +50,30 @@ function renderCarouselSlide() {
   };
 
   const nextSlide = function () {
-    if (curSlide === maxSlide - 1) {
-      curSlide = 0;
+    if (curSlide === maxSlide - 4) {
+      btnRight.classList.add("hidden");
     } else {
       curSlide++;
     }
     goToSlide(curSlide);
+    curSlide === maxSlide - 4 ? btnRight.classList.add("hidden") : curSlide;
+    btnLeft.classList.remove("hidden");
   };
+
   const preSlide = function () {
     if (curSlide === 0) {
-      curSlide = maxSlide - 1;
+      btnLeft.classList.add("hidden");
     } else {
       curSlide--;
     }
     goToSlide(curSlide);
+    curSlide === 0 ? btnLeft.classList.add("hidden") : curSlide;
+    btnRight.classList.remove("hidden");
   };
 
   const init = function () {
     goToSlide(0);
+    if (curSlide === 0) btnLeft.classList.add("hidden");
   };
   init();
 
@@ -95,6 +89,5 @@ function renderCarouselSlide() {
 getMovies().then((moviesData) => {
   movies = moviesData;
   renderCarouselCards(movies);
-
   renderCarouselSlide();
 });
