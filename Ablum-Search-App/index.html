@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/style.css" />
+
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/fetch-jsonp/1.0.6/fetch-jsonp.min.js"
+    ></script>
+    <script defer src="src/index.js"></script>
+
+    <title>Ablum Search</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <form class="search">
+          <input
+            type="text"
+            class="search__field"
+            placeholder="Search artist"
+          />
+          <button class="btn search__btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396l1.414-1.414l-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8s3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6s-6-2.691-6-6s2.691-6 6-6z"
+              />
+              <path
+                d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"
+              />
+            </svg>
+          </button>
+        </form>
+      </header>
+      <section class="result">
+        <div class="result-container">
+          <header>
+            <p class="header-result">Search Ablums by Artist Name</p>
+            <div class="search-line">&nbsp;</div>
+          </header>
+          <div class="search-result">
+            <!-- <div class="result_card">
+              <img
+                src="https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/70/e8/bb/70e8bb4a-3918-faf5-1760-d3f865c0c771/source/60x60bb.jpg"
+                alt="ablum"
+                class="result_card--img"
+              />
+              <p class="result-card--title">
+                ablum titletiesonian dkaognda oig a
+              </p>
+            </div> -->
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
