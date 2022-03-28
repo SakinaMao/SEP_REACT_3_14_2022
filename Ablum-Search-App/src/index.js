@@ -40,20 +40,14 @@ function render(element, template) {
 }
 
 function renderSpinner() {
-  const markup = `
-      <div class="spinner">
-       <svg>
-        <use href="${icons}#icon-loader"></use>
-       </svg>
-     </div>`;
-
-  headerResult.insertAdjacentHTML("afterbegin", markup);
+  headerResult.innerHTML = "loading...";
 }
 
 async function loadSearchResult(query) {
   await getData(query).then((ablumData) => {
     ablums = ablumData;
     renderAblumCards(ablums);
+    headerResult.innerHTML = `${ablumData.length} ablums found`;
     // console.log(ablums);
   });
 }
@@ -61,6 +55,11 @@ async function loadSearchResult(query) {
 searcheParentEl.addEventListener("submit", function (e) {
   e.preventDefault();
   const query = inputSearch.value;
+  renderSpinner();
+  if (!query) {
+    headerResult.innerHTML = `Pleae enter artist's name`;
+    return;
+  }
   inputSearch.value = "";
   loadSearchResult(query);
 });
