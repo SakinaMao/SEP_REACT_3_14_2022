@@ -52,6 +52,7 @@ body {
   background-color: #fff;
   border-radius: 10rem;
   display: flex;
+  width: 50%;
   align-items: center;
   padding-left: 3rem;
   transition: all 0.3s;
@@ -100,7 +101,27 @@ svg {
   align-self: center;
   padding: 1.5rem;
 }
+.search-warning {
+  /* position: absolute;
+  background-color: #fff;
+  border: 1px solid orange;
+  border-radius: 5px;
+  padding: 5px;
+  top: 4rem;
+  left: 60%; */
 
+  bottom: 100%;
+  left: 1.5em;
+  border: 0.75rem solid transparent;
+  border-top: none;
+
+  border-bottom-color: #fff;
+  filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, 0.1));
+}
+
+.hidden {
+  display: none;
+}
 .result-container {
   display: flex;
   flex-direction: column;
@@ -109,6 +130,12 @@ svg {
 .header-result {
   text-align: center;
   font-size: 1.5rem;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .search-line {
@@ -126,8 +153,8 @@ svg {
 }
 
 .result_card {
-  border: 1px solid #555;
-  border-radius: 2px;
+  border: 1px solid rgb(92, 144, 255);
+  border-radius: 3px;
   padding: 0.5rem;
   width: 120px;
   display: flex;
@@ -135,4 +162,55 @@ svg {
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
+  background-color: #eee;
 }
+
+/***********************/
+/* spinner */
+/***********************/
+
+.spinner {
+  text-align: center;
+  border: 0.5rem solid #f3f3f3; /* Light grey */
+  border-top: 0.5rem solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/***********************/
+/* media query */
+/***********************/
+
+/* for max width 672px */
+@media (max-width: 42em) {
+  .result_card {
+    width: 100px;
+  }
+  .result_card img {
+    width: 100%;
+  }
+}
+
+/* for max width 512px */
+@media (max-width: 32em) {
+  .result_card {
+    width: 80px;
+  }
+  .result_card img {
+    width: 100%;
+  }
+  .search {
+    width: 30%;
+  }
+} ;
