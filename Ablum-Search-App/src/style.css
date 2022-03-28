@@ -34,6 +34,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  position: relative;
 }
 
 .header {
@@ -43,6 +44,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  position: sticky;
+  top: 0;
 }
 
 .search {
