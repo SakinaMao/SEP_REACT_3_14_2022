@@ -1,3 +1,7 @@
+:root {
+  --main--color--: rgb(114, 5, 56);
+}
+
 *,
 *::before,
 *::after {
@@ -19,7 +23,7 @@ body {
   height: 100vh;
   /* /* width: 100%; */
   height: 100%;
-  background-color: rgb(114, 5, 56);
+  background-color: var(--main--color--);
   display: flex;
   justify-content: center;
   position: relative;
@@ -185,6 +189,19 @@ header {
   background-color: #eee;
 }
 
+.result_card--link:link,
+.result_card--link:visited {
+  display: inline-block;
+  text-decoration: none;
+  color: #333;
+
+  transition: all 0.3s;
+}
+
+.result_card--link:hover,
+.result_card--link:active {
+  color: var(--main--color--);
+}
 /***********************/
 /* spinner */
 /***********************/

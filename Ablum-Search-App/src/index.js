@@ -1,27 +1,45 @@
+"use strict";
+
 const searcheParentEl = document.querySelector(".search");
 const inputSearch = document.querySelector(".search__field");
 const searchBtn = document.querySelector(".search__btn");
 const headerResult = document.querySelector(".header-result");
 const searchWarning = document.querySelector(".search-warning");
 
+const search = {};
+const state = {
+  album: {},
+  search: { query: "", results: [], resultsPerPage: 50, page: 1 },
+};
 const getData = async function (artistName) {
   const response =
     await fetchJsonp(`https://itunes.apple.com/search?term=${artistName}&media=music&entity=album&attribute=artistTerm&limit=200
   `);
   const albumData = await response.json();
-  return albumData.results;
+  const album = await albumData.results;
+
+  state.album = album.map((album) => {
+    return {
+      collectionId: album.collectionId,
+      collectionName: album.collectionName,
+      artistName: album.artistName,
+      albumUrl: album.collectionViewUrl,
+      albumCover: album.artworkUrl100,
+      artistUrl: album.artistViewUrl,
+    };
+  });
+
+  // return albumData.results;
 };
 
-// getData("gaga");
-
 function generatealbumCard(album) {
-  return `<div class="result_card">
+  return `<div class="result_card"><a href="${album.albumUrl}" target="_blank" class="result_card--link">
   <img
-    src="${album.artworkUrl100}"
+    src="${album.albumCover}"
     alt="${album.collectionName}"
     class="result_card--img"
   />
-  <p class="result-card--title">${album.collectionName}</p>
+  <p class="result-card--title">${album.collectionName}</p></a>
 </div>`;
 }
 
@@ -29,10 +47,10 @@ function generateCardsList(albums) {
   return albums.map((album) => generatealbumCard(album)).join("");
 }
 
-function renderalbumCards(movies) {
+function renderalbumCards(albums) {
   const albumContainer = document.querySelector(".search-result");
   const ele = albumContainer;
-  const tmp = generateCardsList(movies);
+  const tmp = generateCardsList(albums);
   render(ele, tmp);
 }
 
@@ -48,21 +66,21 @@ function renderSpinner() {
 }
 
 async function loadSearchResult(query) {
-  await getData(query).then((albumData) => {
-    albums = albumData;
-    renderalbumCards(albums);
-    headerResult.innerHTML = `Found ${query}'s ${albumData.length} albums`;
-    console.log(albums);
-  });
-}
+  // await getData(query).then((albumData) => {
+  //   albums = albumData;
+  //   renderalbumCards(albums);
+  //   headerResult.innerHTML = `Found ${query}'s ${albumData.length} albums`;
 
-//handle scorllbar
-window.addEventListener("scroll", this.handleScroll, true);
-handleScroll = (e) => {
-  if (e.target.classList.contains("on-scrollbar") === false) {
-    e.target.classList.add("on-scrollbar");
-  }
-};
+  //   renderPagination(albums);
+  // });
+  state.search.query = query;
+  await getData(query);
+  state.search.results = state.album.map((rec) => rec);
+  // console.log(state.album, state.search);
+  // console.log(albumData);
+  renderalbumCards(state.album);
+  headerResult.innerHTML = `Found ${query}'s ${state.album.length} albums`;
+}
 
 searcheParentEl.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -70,11 +88,9 @@ searcheParentEl.addEventListener("submit", function (e) {
   renderSpinner();
   if (!query) {
     headerResult.innerHTML = `Pleae enter artist's name`;
-    // searchWarning.classList.remove("hidden");
     return;
   }
-
   loadSearchResult(query);
-  //   headerResult.classList.remove("spinner");
+
   inputSearch.value = "";
 });
