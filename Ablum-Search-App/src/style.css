@@ -35,7 +35,7 @@ body {
   /* min-height: 117rem; */
   flex: 0 0 80%;
   background-color: #fff;
-
+  position: relative;
   box-shadow: 0 2rem 6rem 0.5rem rgba(grey, 0.25);
   overflow-y: auto;
   display: flex;
@@ -201,6 +201,41 @@ header {
 .result_card--link:hover,
 .result_card--link:active {
   color: var(--main--color--);
+}
+
+.pagination {
+  padding: 1rem 0 2rem 0;
+  /* position: absolute; */
+  top: 50%;
+  /* display: flex; */
+  width: 100%;
+  /* margin-left: -10%px; */
+  /* border: #333 1px solid; */
+  /* justify-content: space-between; */
+  /* transform: translateX(-11%); */
+}
+
+.btn--inline {
+  font-size: 0.8rem;
+  padding: 5px;
+  cursor: pointer;
+  background-color: #3498db;
+}
+
+.btn--inline:hover {
+  background-color: var(--main--color--);
+  color: #fff;
+}
+
+.pagination__btn--prev {
+  /* transform: translateX(80%); */
+  left: 0;
+  float: left;
+}
+
+.pagination__btn--next {
+  float: right;
+  /* transform: translateX(50%); */
 }
 /***********************/
 /* spinner */

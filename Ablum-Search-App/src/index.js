@@ -9,7 +9,7 @@ const searchWarning = document.querySelector(".search-warning");
 const search = {};
 const state = {
   album: {},
-  search: { query: "", results: [], resultsPerPage: 50, page: 1 },
+  search: { query: "", results: [], resultsPerPage: 20, page: 1 },
 };
 const getData = async function (artistName) {
   const response =
@@ -75,14 +75,99 @@ async function loadSearchResult(query) {
   // });
   state.search.query = query;
   await getData(query);
+  // renderalbumCards(state.album);
+
   state.search.results = state.album.map((rec) => rec);
   // console.log(state.album, state.search);
   // console.log(albumData);
-  renderalbumCards(state.album);
-  headerResult.innerHTML = `Found ${query}'s ${state.album.length} albums`;
 }
 
-searcheParentEl.addEventListener("submit", function (e) {
+//pagination
+
+function generatePaginationResult(page = state.search.page) {
+  state.search.page = page;
+  const start = (page - 1) * state.search.resultsPerPage;
+  const end = page * state.search.resultsPerPage;
+
+  return state.search.results.slice(start, end);
+}
+
+function generatePaginationMarup() {
+  const currentPage = state.search.page;
+  const numPages = Math.ceil(
+    state.search.results.length / state.search.resultsPerPage
+  );
+  console.log(currentPage, numPages);
+
+  //page 1 , and there are other pages
+  if (currentPage === 1 && numPages > 1) {
+    return `
+    <button data-goto="${
+      currentPage + 1
+    }" class="btn--inline pagination__btn--next">
+      <span>Page ${currentPage + 1}</span>   
+    </button>`;
+  }
+
+  //last page
+  if (currentPage === numPages && numPages > 1) {
+    return `
+    <button data-goto="${
+      currentPage - 1
+    }" class="btn--inline pagination__btn--prev">      
+      <span>Page ${currentPage - 1}</span>
+    </button>`;
+  }
+  //other page
+  if (currentPage < numPages) {
+    return `
+    <button data-goto="${
+      currentPage - 1
+    }" class="btn--inline pagination__btn--prev">     
+      <span>Page ${currentPage - 1}</span>
+    </button>
+    <button data-goto="${
+      currentPage + 1
+    }" class="btn--inline pagination__btn--next">
+    <span>Page ${currentPage + 1}</span>    
+  </button>`;
+  }
+
+  //page 1 , and NO there are other pages
+}
+
+function renderPatination() {
+  const paginationContainer = document.querySelector(".pagination");
+  const ele = paginationContainer;
+  const tmp = generatePaginationMarup();
+  render(ele, tmp);
+}
+
+function controlPagination(gotoPage) {
+  const paginationResults = generatePaginationResult(gotoPage);
+  console.log(paginationResults);
+  renderalbumCards(paginationResults);
+  renderPatination();
+}
+
+function controlPaginationGoto() {
+  const paginationContainer = document.querySelector(".pagination");
+
+  paginationContainer.addEventListener("click", function (e) {
+    const gotoButton = e.target.closest(".btn--inline");
+    if (!gotoButton) {
+      return;
+    }
+    paginationContainer.innerHTML = "";
+    const albumContainer = document.querySelector(".search-result");
+    albumContainer.innerHTML = "";
+    // console.log(gotoButton);
+    const gotoPage = +gotoButton.dataset.goto;
+    controlPagination(gotoPage);
+  });
+}
+
+searcheParentEl.addEventListener("submit", async function (e) {
   e.preventDefault();
   const query = inputSearch.value;
   renderSpinner();
@@ -90,7 +175,14 @@ searcheParentEl.addEventListener("submit", function (e) {
     headerResult.innerHTML = `Pleae enter artist's name`;
     return;
   }
-  loadSearchResult(query);
-
+  await loadSearchResult(query);
+  headerResult.innerHTML = `Found ${query}'s ${state.album.length} albums`;
+  const paginationContainer = document.querySelector(".pagination");
+  state.search.page = 1;
+  paginationContainer.innerHTML = "";
+  const paginationResults = generatePaginationResult();
+  renderalbumCards(paginationResults);
+  renderPatination();
+  controlPaginationGoto();
   inputSearch.value = "";
 });
