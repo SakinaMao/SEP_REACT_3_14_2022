@@ -49,6 +49,9 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+}
+
+.sticky {
   position: sticky;
   top: 0;
 }
@@ -216,10 +219,14 @@ header {
 }
 
 .btn--inline {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   padding: 5px;
   cursor: pointer;
   background-color: #3498db;
+  border-radius: 5px;
+  border: 0;
+  color: #fff;
+  transition: 200ms;
 }
 
 .btn--inline:hover {
@@ -237,6 +244,30 @@ header {
   float: right;
   /* transform: translateX(50%); */
 }
+
+.pagination--title {
+  float: right;
+}
+
+.pagination--info {
+  display: flex;
+  justify-content: space-between;
+}
+.btn-results-per-page {
+  display: inline-block;
+  font-size: 1rem;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0 1rem;
+  transition: 200ms;
+}
+
+.btn-results-per-page:hover {
+  background-color: #3498db;
+  color: #fff;
+}
+
 /***********************/
 /* spinner */
 /***********************/

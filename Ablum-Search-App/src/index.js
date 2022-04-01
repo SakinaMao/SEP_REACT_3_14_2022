@@ -5,11 +5,14 @@ const inputSearch = document.querySelector(".search__field");
 const searchBtn = document.querySelector(".search__btn");
 const headerResult = document.querySelector(".header-result");
 const searchWarning = document.querySelector(".search-warning");
+const albumContainer = document.querySelector(".search-result");
+const paginationTitleContainer = document.querySelector(".pagination--title");
+const resultsPerPage = document.querySelector(".results-per-page-wrapper");
+const paginationContainer = document.querySelector(".pagination");
 
-const search = {};
 const state = {
   album: {},
-  search: { query: "", results: [], resultsPerPage: 20, page: 1 },
+  search: { query: "", results: [], resultsPerPage: 50, page: 1 },
 };
 const getData = async function (artistName) {
   const response =
@@ -48,16 +51,54 @@ function generateCardsList(albums) {
 }
 
 function renderalbumCards(albums) {
-  const albumContainer = document.querySelector(".search-result");
   const ele = albumContainer;
   const tmp = generateCardsList(albums);
   render(ele, tmp);
 }
 
 function render(element, template) {
-  element.insertAdjacentHTML("afterbegin", template);
+  // element.insertAdjacentHTML("afterbegin", template);
+  element.innerHTML = template;
 }
 
+function generatePaginationTitle(start, results) {
+  return `<p>view ${start} to ${start + results.length} of ${
+    state.search.results.length
+  } results</p>  `;
+}
+
+function generateResultsPerPage(numberOfResults) {
+  return `<p>view <button class="btn-results-per-page btn-20">20</button> <button class="btn-results-per-page btn-50">50</button>  albums per page </p>  `;
+}
+
+function renderResultsPerPage(numberOfResults) {
+  const ele = resultsPerPage;
+  const tmp = generateResultsPerPage(numberOfResults);
+
+  render(ele, tmp);
+}
+
+function controlResultPerPage() {
+  const numberOfResultsEl = document.querySelector(".results-per-page-wrapper");
+  numberOfResultsEl.addEventListener("click", function (e) {
+    const numberOfResultsBtn = e.target.closest(".btn-results-per-page");
+    if (!numberOfResultsBtn) return;
+    if (numberOfResultsBtn.classList.contains("btn-20")) {
+      state.search.resultsPerPage = 20;
+      renderNewResult();
+    }
+    if (numberOfResultsBtn.classList.contains("btn-50")) {
+      state.search.resultsPerPage = 50;
+      renderNewResult();
+    }
+  });
+}
+
+function renderPagiTitle(start, results) {
+  const ele = paginationTitleContainer;
+  const tmp = generatePaginationTitle(start, results);
+  render(ele, tmp);
+}
 function renderSpinner() {
   headerResult.innerHTML = "loading";
   const markup = `<div class="spinner"></div>`;
@@ -66,20 +107,10 @@ function renderSpinner() {
 }
 
 async function loadSearchResult(query) {
-  // await getData(query).then((albumData) => {
-  //   albums = albumData;
-  //   renderalbumCards(albums);
-  //   headerResult.innerHTML = `Found ${query}'s ${albumData.length} albums`;
-
-  //   renderPagination(albums);
-  // });
   state.search.query = query;
   await getData(query);
-  // renderalbumCards(state.album);
 
   state.search.results = state.album.map((rec) => rec);
-  // console.log(state.album, state.search);
-  // console.log(albumData);
 }
 
 //pagination
@@ -89,7 +120,9 @@ function generatePaginationResult(page = state.search.page) {
   const start = (page - 1) * state.search.resultsPerPage;
   const end = page * state.search.resultsPerPage;
 
-  return state.search.results.slice(start, end);
+  const results = state.search.results.slice(start, end);
+  renderPagiTitle(start, results);
+  return results;
 }
 
 function generatePaginationMarup() {
@@ -97,7 +130,6 @@ function generatePaginationMarup() {
   const numPages = Math.ceil(
     state.search.results.length / state.search.resultsPerPage
   );
-  console.log(currentPage, numPages);
 
   //page 1 , and there are other pages
   if (currentPage === 1 && numPages > 1) {
@@ -136,7 +168,13 @@ function generatePaginationMarup() {
   //page 1 , and NO there are other pages
 }
 
-function renderPatination() {
+function clearPreviousResult() {
+  paginationTitleContainer.innerHTML = "";
+  paginationContainer.innerHTML = "";
+  albumContainer.innerHTML = "";
+}
+
+function renderPagination() {
   const paginationContainer = document.querySelector(".pagination");
   const ele = paginationContainer;
   const tmp = generatePaginationMarup();
@@ -145,26 +183,36 @@ function renderPatination() {
 
 function controlPagination(gotoPage) {
   const paginationResults = generatePaginationResult(gotoPage);
-  console.log(paginationResults);
+
   renderalbumCards(paginationResults);
-  renderPatination();
+
+  renderPagination();
 }
 
 function controlPaginationGoto() {
-  const paginationContainer = document.querySelector(".pagination");
-
   paginationContainer.addEventListener("click", function (e) {
     const gotoButton = e.target.closest(".btn--inline");
     if (!gotoButton) {
       return;
     }
-    paginationContainer.innerHTML = "";
+
     const albumContainer = document.querySelector(".search-result");
-    albumContainer.innerHTML = "";
-    // console.log(gotoButton);
+    // clearPreviousResult();
+
     const gotoPage = +gotoButton.dataset.goto;
     controlPagination(gotoPage);
   });
+}
+
+function renderNewResult() {
+  state.search.page = 1;
+  const paginationResults = generatePaginationResult();
+
+  renderalbumCards(paginationResults);
+  renderPagination();
+  controlPaginationGoto();
+  renderResultsPerPage(state.search.resultsPerPage);
+  controlResultPerPage();
 }
 
 searcheParentEl.addEventListener("submit", async function (e) {
@@ -178,11 +226,6 @@ searcheParentEl.addEventListener("submit", async function (e) {
   await loadSearchResult(query);
   headerResult.innerHTML = `Found ${query}'s ${state.album.length} albums`;
   const paginationContainer = document.querySelector(".pagination");
-  state.search.page = 1;
-  paginationContainer.innerHTML = "";
-  const paginationResults = generatePaginationResult();
-  renderalbumCards(paginationResults);
-  renderPatination();
-  controlPaginationGoto();
+  renderNewResult();
   inputSearch.value = "";
 });
