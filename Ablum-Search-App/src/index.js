@@ -166,6 +166,7 @@ function generatePaginationMarup() {
   }
 
   //page 1 , and NO there are other pages
+  if (currentPage === 1) return ``;
 }
 
 function clearPreviousResult() {
@@ -187,6 +188,10 @@ function controlPagination(gotoPage) {
   renderalbumCards(paginationResults);
 
   renderPagination();
+}
+
+function renderError(err) {
+  headerResult.innerHTML = `Something went wrong! Please try again later!`;
 }
 
 function controlPaginationGoto() {
@@ -216,16 +221,21 @@ function renderNewResult() {
 }
 
 searcheParentEl.addEventListener("submit", async function (e) {
-  e.preventDefault();
-  const query = inputSearch.value;
-  renderSpinner();
-  if (!query) {
-    headerResult.innerHTML = `Pleae enter artist's name`;
-    return;
+  try {
+    e.preventDefault();
+    const query = inputSearch.value;
+    renderSpinner();
+    if (!query) {
+      headerResult.innerHTML = `Pleae enter artist's name`;
+      return;
+    }
+    await loadSearchResult(query);
+    headerResult.innerHTML = `Found ${query}'s ${state.album.length} albums`;
+    const paginationContainer = document.querySelector(".pagination");
+    renderNewResult();
+    inputSearch.value = "";
+  } catch (err) {
+    // console.log(err.message);
+    renderError(err);
   }
-  await loadSearchResult(query);
-  headerResult.innerHTML = `Found ${query}'s ${state.album.length} albums`;
-  const paginationContainer = document.querySelector(".pagination");
-  renderNewResult();
-  inputSearch.value = "";
 });

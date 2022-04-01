@@ -71,6 +71,11 @@ svg {
   height: 2rem;
   fill: #555;
 }
+svg:hover {
+  width: 2.2rem;
+  height: 2.2rem;
+  fill: var(--main--color--);
+}
 
 .search__field {
   border: none;
@@ -102,6 +107,7 @@ svg {
 
   display: flex;
   align-items: center;
+  transition: 200ms;
 }
 
 .result {
@@ -275,7 +281,7 @@ header {
 .spinner {
   text-align: center;
   border: 0.5rem solid #f3f3f3; /* Light grey */
-  border-top: 0.5rem solid #3498db; /* Blue */
+  border-top: 0.5rem solid var(--main--color--);
   border-radius: 50%;
   width: 2.5rem;
   height: 2.5rem;
@@ -337,6 +343,14 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
+  }
+  .pagination--info {
+    flex-direction: column;
+  }
+  .result_card--link {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
   }
 }
 
